@@ -13,7 +13,7 @@ FROM openjdk:11-jre-slim
 
 # Copy over the built jar and configuration from the build stage.
 WORKDIR /app
-COPY --from=build /sources/eventsCollector/target/eventsCollector-*.*.*-SNAPSHOT.jar /app/beckn-exp-api.jar
+COPY --from=build /sources/eventsCollector/target/eventsCollector-*.*.*-SNAPSHOT.jar /app/eventsCollector.jar
 COPY --from=build /sources/eventsCollector/src/main/resources/application.properties /app/application.properties
 # Run the eventsCollector jar.
 ENTRYPOINT [ "bash", "-c", "java -jar /app/eventsCollector.jar -spring.config.location=file:///app/application.properties" ]
