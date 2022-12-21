@@ -1,4 +1,4 @@
-name: Deploying exp-api using docker
+name: Deploying beckn-eventcollector using docker
 on:
   push:
     branches:
@@ -24,8 +24,8 @@ jobs:
           git pull
           SHORT_SHA=$(git rev-parse --short HEAD)
           docker build -t beckn-eventcollector:$SHORT_SHA .
-          docker stop beckn-eventcollector
-          docker rm beckn-eventcollector
-          docker run -d --network "host"  --name beckn-eventcollector beckn-eventcollector:$SHORT_SHA
-          echo "printing docker image sha"
-          docker images --no-trunc --quiet beckn-eventcollector
+          # docker stop beckn-eventcollector
+          # docker rm beckn-eventcollector
+          # docker run -d --network "host"  --name beckn-eventcollector beckn-eventcollector:$SHORT_SHA
+          # echo "printing docker image sha"
+          # docker images --no-trunc --quiet beckn-eventcollector
