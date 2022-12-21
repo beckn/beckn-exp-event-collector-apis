@@ -19,7 +19,7 @@ jobs:
         key: ${{ secrets.KEY }}
         port: ${{ secrets.PORT }}
         script: |
-          cd beckn-exp-apis
+          cd beckn-exp-event-collector-apis
           git checkout main
           git pull
           SHORT_SHA=$(git rev-parse --short HEAD)
