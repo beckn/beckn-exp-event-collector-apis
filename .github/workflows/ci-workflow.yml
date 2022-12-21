@@ -1,4 +1,4 @@
-name: Deploying beckn-eventcollector using docker
+name: Deploying beckn-eventcollector apis using docker
 on:
   push:
     branches:
