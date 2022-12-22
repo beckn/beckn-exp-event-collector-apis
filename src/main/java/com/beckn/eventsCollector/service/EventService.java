@@ -2,6 +2,7 @@ package com.beckn.eventsCollector.service;
 
 import com.beckn.eventsCollector.dto.EventDTO;
 import com.beckn.eventsCollector.mapper.EventDtoToEventMapper;
+import com.beckn.eventsCollector.mapper.EventToEventDtoMapper;
 import com.beckn.eventsCollector.model.Event;
 import com.beckn.eventsCollector.repository.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +21,13 @@ public class EventService {
     @Autowired
     private EventDtoToEventMapper eventDtoToEventMapper;
 
-    public Event saveOrUpdateEvent(EventDTO inputEvent) {
+    @Autowired
+    private EventToEventDtoMapper eventToEventDtoMapper;
+
+    public EventDTO saveOrUpdateEvent(EventDTO inputEvent) {
         Event event = eventDtoToEventMapper.mapEventDtoToEvent(inputEvent);
         event.setEvent_id(service.getSequenceNumber(SEQUENCE_NAME));
-        return eventRepository.save(event);
+        event = eventRepository.save(event);
+        return eventToEventDtoMapper.mapEventToEventDto(event);
     }
 }
