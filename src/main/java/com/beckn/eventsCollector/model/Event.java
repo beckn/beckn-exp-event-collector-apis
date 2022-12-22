@@ -25,7 +25,6 @@ public class Event {
     private String event_code;
     private String event_title;
     private String event_message;
-    private String event_layer;
     private String event_source_type;
     private String event_destination_type;
     private String event_source_id;

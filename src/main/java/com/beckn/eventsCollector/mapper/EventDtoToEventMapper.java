@@ -12,11 +12,10 @@ public class EventDtoToEventMapper {
         event.setEvent_code(eventDTO.getEventCode());
         event.setEvent_title(eventDTO.getEventTitle());
         event.setEvent_message(eventDTO.getEventMessage());
-        event.setEvent_layer(eventDTO.getEventLayer().toString());
-        event.setEvent_source_type(eventDTO.getEventSourceType());
-        event.setEvent_destination_type(eventDTO.getEventDestinationType());
-        event.setEvent_source_id(eventDTO.getEventSourceId());
-        event.setEvent_destination_id(eventDTO.getEventDestinationId());
+        event.setEvent_source_id(eventDTO.getEventSource().getEventSourceId());
+        event.setEvent_source_type(eventDTO.getEventSource().getEventSourceType());
+        event.setEvent_destination_id(eventDTO.getEventDestination().getEventDestinationId());
+        event.setEvent_destination_type(eventDTO.getEventDestination().getEventDestinationType());
         event.setPayload(eventDTO.getPayload());
         event.setContext_transaction_id(eventDTO.getContext().getTransactionId());
         event.setContext_message_id(eventDTO.getContext().getMessageId());

@@ -19,8 +19,8 @@ public class EventController {
     private EventService eventService;
 
     @PostMapping(value = "/event")
-    public ResponseEntity<Event> saveOrUpdateEvent(@RequestBody EventDTO inputEvent) {
-        Event event = eventService.saveOrUpdateEvent(inputEvent);
-        return ResponseEntity.ok(event);
+    public ResponseEntity<EventDTO> saveOrUpdateEvent(@RequestBody EventDTO inputEvent) {
+        EventDTO eventDTO = eventService.saveOrUpdateEvent(inputEvent);
+        return ResponseEntity.ok(eventDTO);
     }
 }

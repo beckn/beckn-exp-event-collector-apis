@@ -15,17 +15,15 @@ import java.util.Date;
 @Getter
 @Setter
 public class EventDTO {
+    private int eventId;
     private String experienceId;
     private String eventCode;
     private String eventTitle;
     private String eventMessage;
-    private EventLayer eventLayer;
-    private String eventSourceType;
-    private String eventDestinationType;
-    private String eventSourceId;
-    private String eventDestinationId;
-    private String payload;
+    private EventSource eventSource;
+    private EventDestination eventDestination;
     private EventContext context;
+    private String payload;
     private Date eventStart_ts;
     private Date eventEnd_ts;
     private Date created_ts;
