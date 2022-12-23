@@ -158,5 +158,5 @@ components:
 security:
   - ApiKey: []
 servers:
-  - url: https://api.experience.becknprotocol.io/events
+  - url: https://api.eventcollector.becknprotocol.io
     variables: {}
