@@ -1,6 +1,6 @@
   openapi: 3.0.0
   info:
-    version: 0.1.7
+    version: 0.1.8
     title: Events Collector API
     description: >-
       API for network components to remmit events for tracking
@@ -56,6 +56,42 @@
                   type: "System error"
                   code: "500"
                   path: "/event"
+                  message: "Error processing request {specific error log from exception/error}"
+    /event/experience:
+      get:
+        tags:
+          - GetLatestExperienceSession
+        summary: Get latest active experience session 
+        responses:
+          '200':
+            description: Latest experience session retrieved
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ExperienceId'
+                example:
+                  "99beb99f-7a46-463e-863d-1c03218fe13c"
+          '404':
+            description: Latest experience sessio could not be retrieved
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Error'
+                example:
+                  type: "Application error"
+                  code: "404"
+                  path: "/event/experience"
+                  message: "Latest experience sessio could not be retrieved"
+          '500':
+            description: Unexpected error
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Error'
+                example:
+                  type: "System error"
+                  code: "500"
+                  path: "/event/experience"
                   message: "Error processing request {specific error log from exception/error}"
     /event/code/{eventCode}:
       parameters:
