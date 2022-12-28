@@ -1,6 +1,6 @@
   openapi: 3.0.0
   info:
-    version: 0.1.6
+    version: 0.1.7
     title: Events Collector API
     description: >-
       API for network components to remmit events for tracking
@@ -21,14 +21,8 @@
               example:
                 experienceId: "99beb99f-7a46-463e-863d-1c03218fe13c"
                 eventCode: "motb_srch_init"
-                eventSource:
-                  id: "2"
-                  type: "bap"
-                  name: "TravelBuddy"
-                eventDestination:
-                  id: "1"
-                  type: "gateway"
-                  name: "Gateway"
+                eventSourceId: "2"
+                eventDestinationId: "1"
                 eventAction: "init"
                 eventStart_ts: "2022-12-28T07:10:30Z"
                 payload": {}
@@ -139,8 +133,8 @@
         required:
           - experienceId
           - eventCode
-          - eventSource
-          - eventDestination
+          - eventSourceId
+          - eventDestinationId
           - eventStart_ts
         properties:
           experienceId:
@@ -148,14 +142,12 @@
           eventCode:
             type: string
             description: Event code
-          eventSource:
-            description: Source application details
-            allOf:
-              - "$ref": '#/components/schemas/Subscriber'
-          eventDestination:
-            description: Destination application details
-            allOf:
-              - "$ref": '#/components/schemas/Subscriber'
+          eventSourceId:
+            type: string
+            description: Source application id
+          eventDestinationId:
+            type: string
+            description: Destination application id
           eventAction:
             type: string
             description: Protocal action for the event
@@ -164,7 +156,7 @@
             description: Time when the event is started
           payload:
             type: object
-      EventResponse:
+      EventResponseUNUSED:
         description: Response object for event
         type: object
         required:

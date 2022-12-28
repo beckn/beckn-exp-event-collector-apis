@@ -1,0 +1,335 @@
+  openapi: 3.0.0
+  info:
+    version: 0.1.8
+    title: Events Collector API
+    description: >-
+      API for network components to remmit events for tracking
+      Transaction history.
+  paths:
+    /event:
+      post:
+        tags:
+          - CreateEvent
+        summary: Create an event
+        requestBody:
+          description: Event object for the application to log events
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventRequest'
+              example:
+                experienceId: "99beb99f-7a46-463e-863d-1c03218fe13c"
+                eventCode: "motb_srch_init"
+                eventSourceId: "2"
+                eventDestinationId: "1"
+                eventAction: "init"
+                eventStart_ts: "2022-12-28T07:10:30Z"
+                payload": {}
+        responses:
+          '200':
+            description: Event is created
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/EventId'
+                example:
+                  "100"
+          '404':
+            description: Event could not be created
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Error'
+                example:
+                  type: "Application error"
+                  code: "404"
+                  path: "/event"
+                  message: "Event count not be created"
+          '500':
+            description: Unexpected error
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Error'
+                example:
+                  type: "System error"
+                  code: "500"
+                  path: "/event"
+                  message: "Error processing request {specific error log from exception/error}"
+    /event/experience:
+      get:
+        tags:
+          - GetLatestExperienceSession
+        summary: Get latest active experience session 
+        responses:
+          '200':
+            description: Latest experience session retrieved
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ExperienceId'
+                example:
+                  "99beb99f-7a46-463e-863d-1c03218fe13c"
+          '404':
+            description: Latest experience sessio could not be retrieved
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Error'
+                example:
+                  type: "Application error"
+                  code: "404"
+                  path: "/event/experience"
+                  message: "Latest experience sessio could not be retrieved"
+          '500':
+            description: Unexpected error
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Error'
+                example:
+                  type: "System error"
+                  code: "500"
+                  path: "/event/experience"
+                  message: "Error processing request {specific error log from exception/error}"
+    /event/code/{eventCode}:
+      parameters:
+        - name: eventCode
+          description: Event code from the event master
+          in: path
+          required: true
+          schema:
+            type: string
+            description: Application id for source
+          example:
+            "motb_otp_verfy_req"
+      get:
+        tags:
+          - GetEventCodeDetails
+        summary: Get event code details from master
+        responses:
+          '200':
+            description: Event code details are retrieved
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/EventCodeData'
+                example:
+                  eventMessage: 
+                    eventCode: "motb_otp_verfy_req"
+                    actionMessage: "na"
+                    bapMessage: "I have shared OTP to driver"
+                    bppMessage: "I am waiting for OTP from rider"
+          '404':
+            description: Event code details could not be retrieved
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Error'
+                example:
+                  type: "Application error"
+                  code: "404"
+                  path: "/event"
+                  message: "Event code details could not be retrieved"
+          '500':
+            description: Unexpected error
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Error'
+                example:
+                  type: "System error"
+                  code: "500"
+                  path: "/event"
+                  message: "Error processing request {specific error log from exception/error}"
+  components:
+    schemas:
+      ExperienceId:
+        description: Event experience id
+        type: string
+        required:
+          - experienceId
+        properties:
+          experienceId:
+            type: string
+            description: Session id (unique id based on domain and app details)
+      EventId:
+        description: Event id
+        type: string
+        required:
+          - eventId
+        properties:
+          eventId:
+            type: integer
+            description: Event id (unique id that was created as a result of new event)  
+      EventRequest:
+        description: Object to create a new event
+        type: object
+        required:
+          - experienceId
+          - eventCode
+          - eventSourceId
+          - eventDestinationId
+          - eventStart_ts
+        properties:
+          experienceId:
+            $ref: '#/components/schemas/ExperienceId'
+          eventCode:
+            type: string
+            description: Event code
+          eventSourceId:
+            type: string
+            description: Source application id
+          eventDestinationId:
+            type: string
+            description: Destination application id
+          eventAction:
+            type: string
+            description: Protocal action for the event
+          eventStart_ts:
+            type: string
+            description: Time when the event is started
+          payload:
+            type: object
+      EventResponseUNUSED:
+        description: Response object for event
+        type: object
+        required:
+          - experienceId
+          - eventId
+        properties:
+          experienceId:
+            $ref: '#/components/schemas/ExperienceId'
+          eventId:
+            $ref: '#/components/schemas/EventId'
+          event:
+            $ref: '#/components/schemas/Event'
+      Event:
+        description: Object to manage event data
+        type: object
+        required:
+          - eventSource
+          - eventDestination
+          - eventMessage
+          - eventTimeline
+        properties:
+          eventSource:
+            description: Source application details
+            allOf:
+              - "$ref": '#/components/schemas/Subscriber'
+          eventDestination:
+            description: Destination application details
+            allOf:
+              - "$ref": '#/components/schemas/Subscriber'
+          eventMessage:
+            $ref: '#/components/schemas/Message'
+          eventTimeline:
+            $ref: '#/components/schemas/EventTimeline'
+          payload:
+            type: object
+      Subscriber:
+        description: Subscriber details
+        type: object
+        required:
+          - id
+          - type
+          - name
+        properties:
+          id:
+            type: string
+            description: Subscriber id for application
+          type:
+            type: string
+            description: Application type
+            enum:
+              - bap
+              - bpp
+              - gateway
+          name:
+            type: string
+            description: Application name of subscriber
+      Message:
+        description: Message object for event
+        type: object
+        required:
+          - eventCode
+          - actionMessage
+          - bapMessage
+          - bppMessage
+        properties:
+          eventCode:
+            type: string
+            description: Code for event
+          actionMessage:
+            $ref: '#/components/schemas/ActionMessage'
+          bapMessage:
+            $ref: '#/components/schemas/BAPMessage'
+          bppMessage:
+            $ref: '#/components/schemas/BPPMessage'
+      ActionMessage:
+        $ref: '#/components/schemas/MessageData'
+      BAPMessage:
+        $ref: '#/components/schemas/MessageData'
+      BPPMessage:
+        $ref: '#/components/schemas/MessageData'
+      MessageData:
+        description: Object to hold message
+        type: string
+        required:
+          - message
+        properties:
+          message:
+            type: string
+            description: Message 
+      EventTimeline:
+        description: Object to manage event timeline
+        type: object
+        properties:
+          start_ts:
+            type: string
+            description: Time when the event is started
+          end_ts:
+            type: string
+            description: Time when the event was completed
+          created_ts:
+            type: string
+            description: Time when the event is created
+          lastModified_ts:
+            type: string
+            description: Time when the event was last modified
+      EventCodeData:
+        description: Object to hold event code data
+        type: object
+        required:
+          - eventMessage
+        properties:
+          eventMessage:
+            $ref: '#/components/schemas/Message'
+      Error:
+        type: object
+        required:
+          - message
+        properties:
+          type:
+            description: Type of error
+            type: string
+          code:
+            description: Event specific error code
+            type: string
+          path:
+            description: Path to json schema generating the error. Used only during json schema validation errors
+            type: string
+          message:
+            description: Human readable error message from event collector API
+            type: string
+    securitySchemes:
+      ApiKey:
+        type: apiKey
+        in: header
+        name: X-Api-Key
+  security:
+    - ApiKey: []
+  servers:
+    - url: https://api.eventcollector.becknprotocol.io/v2
+      variables: {}
