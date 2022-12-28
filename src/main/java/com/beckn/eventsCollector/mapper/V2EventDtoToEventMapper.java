@@ -14,9 +14,9 @@ public class V2EventDtoToEventMapper {
         V2Event event = new V2Event();
         event.setExperience_id(eventDTO.getExperienceId());
         event.setEvent_code(eventDTO.getEventCode());
-        event.setAction(eventDTO.getAction());
-        event.setSource_app_id(eventDTO.getSourceAppId());
-        event.setDestination_app_id(eventDTO.getDestinationAppId());
+        event.setAction(eventDTO.getEventAction());
+        event.setSource_app_id(eventDTO.getEventSourceId());
+        event.setDestination_app_id(eventDTO.getEventDestinationId());
         event.setPayload(eventDTO.getPayload());
         event.setStart(eventDTO.getEventStart_ts());
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss.SSS");

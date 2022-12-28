@@ -26,10 +26,10 @@ public class V2EventController {
         if (inputEvent.getEventCode() == null) {
             return new ResponseEntity<>("Event code is missing.", HttpStatus.BAD_REQUEST);
         }
-        if (inputEvent.getSourceAppId() == null) {
+        if (inputEvent.getEventSourceId() == null) {
             return new ResponseEntity<>("Source app id is missing.", HttpStatus.BAD_REQUEST);
         }
-        if (inputEvent.getDestinationAppId() == null) {
+        if (inputEvent.getEventDestinationId() == null) {
             return new ResponseEntity<>("Destination id is missing.", HttpStatus.BAD_REQUEST);
         }
         try {

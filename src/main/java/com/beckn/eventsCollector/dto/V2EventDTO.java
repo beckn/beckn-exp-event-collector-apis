@@ -17,9 +17,9 @@ import java.util.Date;
 public class V2EventDTO {
     private String experienceId;
     private String eventCode;
-    private String action;
-    private String sourceAppId;
-    private String destinationAppId;
+    private String eventAction;
+    private String eventSourceId;
+    private String eventDestinationId;
     private Date eventStart_ts;
     private String payload;
 }
