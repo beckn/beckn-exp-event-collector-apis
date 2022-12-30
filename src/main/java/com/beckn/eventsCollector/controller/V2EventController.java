@@ -1,6 +1,7 @@
 package com.beckn.eventsCollector.controller;
 
 
+import com.beckn.eventsCollector.cache.DatabaseCache;
 import com.beckn.eventsCollector.dto.V2EventDTO;
 import com.beckn.eventsCollector.exception.EventControllerException;
 import com.beckn.eventsCollector.exception.EventException;
@@ -27,21 +28,21 @@ public class V2EventController {
             );
             return new ResponseEntity<>(eventControllerException, HttpStatus.BAD_REQUEST);
         }
-        if (inputEvent.getEventCode() == null) {
+        if (inputEvent.getEventCode() == null || DatabaseCache.EVENT_MESSAGE_MAP.get(inputEvent.getEventCode()) == null) {
             EventControllerException eventControllerException = new EventControllerException(
-                    "Application error", HttpStatus.BAD_REQUEST.toString(), "/event", "Event code is missing."
+                    "Application error", HttpStatus.BAD_REQUEST.toString(), "/event", "Event code is missing or not found in store."
             );
             return new ResponseEntity<>(eventControllerException, HttpStatus.BAD_REQUEST);
         }
-        if (inputEvent.getEventSourceId() == null) {
+        if (inputEvent.getEventSourceId() == null || DatabaseCache.APPLICATION_MAP.get(inputEvent.getEventSourceId()) == null) {
             EventControllerException eventControllerException = new EventControllerException(
-                    "Application error", HttpStatus.BAD_REQUEST.toString(), "/event", "Source app id is missing."
+                    "Application error", HttpStatus.BAD_REQUEST.toString(), "/event", "Source app id is missing or not found in store."
             );
             return new ResponseEntity<>(eventControllerException, HttpStatus.BAD_REQUEST);
         }
-        if (inputEvent.getEventDestinationId() == null) {
+        if (inputEvent.getEventDestinationId() == null || DatabaseCache.APPLICATION_MAP.get(inputEvent.getEventSourceId()) == null) {
             EventControllerException eventControllerException = new EventControllerException(
-                    "Application error", HttpStatus.BAD_REQUEST.toString(), "/event", "Destination app id is missing."
+                    "Application error", HttpStatus.BAD_REQUEST.toString(), "/event", "Destination app id is missing or not found in store."
             );
             return new ResponseEntity<>(eventControllerException, HttpStatus.BAD_REQUEST);
         }
