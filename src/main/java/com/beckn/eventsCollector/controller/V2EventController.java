@@ -5,6 +5,7 @@ import com.beckn.eventsCollector.dto.V2EventDTO;
 import com.beckn.eventsCollector.exception.EventControllerException;
 import com.beckn.eventsCollector.exception.EventException;
 import com.beckn.eventsCollector.model.EventMessage;
+import com.beckn.eventsCollector.model.V2Event;
 import com.beckn.eventsCollector.service.V2EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -46,7 +47,7 @@ public class V2EventController {
         }
         try {
             int eventId = eventService.saveOrUpdateEvent(inputEvent);
-            return ResponseEntity.ok("Event Id : " + eventId);
+            return ResponseEntity.ok(eventId);
         } catch (Exception e) {
             EventControllerException eventControllerException = new EventControllerException(
                     "System error", HttpStatus.INTERNAL_SERVER_ERROR.toString(), "/event", "Error processing request " + e.getMessage()
@@ -59,7 +60,7 @@ public class V2EventController {
     public ResponseEntity<?> getLatestExperienceSession() {
         try {
             String experienceId = eventService.getLatestExperienceSession();
-            return ResponseEntity.ok("Experience Id : " + experienceId);
+            return ResponseEntity.ok(experienceId);
         } catch (EventException e) {
             EventControllerException eventControllerException = new EventControllerException(
                     e.getType(), e.getCode(), e.getPath(), e.getMessage()
@@ -85,5 +86,30 @@ public class V2EventController {
             );
             return new ResponseEntity<>(eventControllerException, HttpStatus.NOT_FOUND);
         }
+    }
+
+    @GetMapping(value = "/event/{eventId}")
+    public ResponseEntity<?> GetEventDetails(@PathVariable Integer eventId) {
+        if (eventId == null) {
+            EventControllerException eventControllerException = new EventControllerException(
+                    "Application error", HttpStatus.BAD_REQUEST.toString(), "/event", "Event code is missing."
+            );
+            return new ResponseEntity<>(eventControllerException, HttpStatus.BAD_REQUEST);
+        }
+        try {
+            V2Event event = eventService.GetEventDetails(eventId);
+            return ResponseEntity.ok(event);
+        } catch (EventException e) {
+            EventControllerException eventControllerException = new EventControllerException(
+                    e.getType(), e.getCode(), e.getPath(), e.getMessage()
+            );
+            return new ResponseEntity<>(eventControllerException, HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping(value = "/event/event-message")
+    public ResponseEntity<?> reloadEventMessages() {
+        eventService.reloadEventMessages();
+        return ResponseEntity.ok("");
     }
 }
