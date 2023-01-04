@@ -40,7 +40,7 @@ public class V2EventController {
             );
             return new ResponseEntity<>(eventControllerException, HttpStatus.BAD_REQUEST);
         }
-        if (inputEvent.getEventDestinationId() == null || DatabaseCache.APPLICATION_MAP.get(inputEvent.getEventSourceId()) == null) {
+        if (inputEvent.getEventDestinationId() == null || DatabaseCache.APPLICATION_MAP.get(inputEvent.getEventDestinationId()) == null) {
             EventControllerException eventControllerException = new EventControllerException(
                     "Application error", HttpStatus.BAD_REQUEST.toString(), "/event", "Destination app id is missing or not found in store."
             );
