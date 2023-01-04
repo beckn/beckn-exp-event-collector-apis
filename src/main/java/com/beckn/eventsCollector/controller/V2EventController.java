@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
 @RequestMapping("/v2")
@@ -108,6 +109,7 @@ public class V2EventController {
         }
     }
 
+    @ApiIgnore
     @GetMapping(value = "/event/event-message")
     public ResponseEntity<?> reloadEventMessages() {
         eventService.reloadEventMessages();
