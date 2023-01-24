@@ -3,7 +3,8 @@ on:
   push:
     branches:
     - main
- 
+    paths-ignore:
+    - 'api/**' 
  
 jobs:
   build:
@@ -28,3 +29,5 @@ jobs:
           docker run -d -p 8081:8081  --name beckn-eventcollector beckn-eventcollector:$SHORT_SHA
           echo "printing docker image sha"
           docker images --no-trunc --quiet beckn-eventcollector
+          sleep 10
+          curl --location --request GET 'https://api.eventcollector.becknprotocol.io/v2/event/event-message' --data-raw ''
